@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Is This Testimony Done? — Jason Kashdan</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #F1F5F9; min-height: 100vh; padding: 24px 16px; color: #334155; }
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { background: #334155; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; color: white; }
+  .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .header p { font-size: 13px; color: #94A3B8; line-height: 1.6; }
+
+  .how { background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; font-size: 12px; color: #1E40AF; line-height: 1.6; }
+
+  .section { background: #F8FAFC; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+  .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .section-sub { font-size: 12px; color: #64748B; margin-bottom: 10px; line-height: 1.5; }
+
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 9px; border-radius: 5px; cursor: pointer; border: 1px solid #E2E8F0; margin-bottom: 6px; background: white; transition: background 0.15s, border-color 0.15s; user-select: none; }
+  .check-item:hover { background: #F0FDF4; }
+  .check-item.checked { background: #F0FDF4; border-color: #86EFAC; }
+  .check-box { width: 18px; height: 18px; border-radius: 3px; border: 2px solid #94A3B8; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; transition: all 0.15s; }
+  .check-item.checked .check-box { background: #2D6A4F; border-color: #2D6A4F; }
+  .check-mark { color: white; font-size: 11px; font-weight: 900; display: none; }
+  .check-item.checked .check-mark { display: block; }
+  .check-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
+  .check-note { font-size: 11px; color: #64748B; margin-top: 3px; font-style: italic; line-height: 1.4; }
+
+  .status-msg { font-size: 11px; font-weight: 700; margin-top: 6px; padding: 5px 8px; border-radius: 4px; }
+  .status-ok { color: #2D6A4F; background: #DCFCE7; }
+  .status-warn { color: #D97706; background: #FEF3C7; }
+  .status-err { color: #B91C1C; background: #FEE2E2; }
+
+  .verdict { border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; transition: background 0.3s, border-color 0.3s; }
+  .verdict.ready { background: #F0FDF4; border: 2px solid #2D6A4F; }
+  .verdict.not-ready { background: #FFF7ED; border: 2px solid #D97706; }
+  .verdict h2 { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+  .verdict.ready h2 { color: #2D6A4F; }
+  .verdict.not-ready h2 { color: #D97706; }
+  .verdict p { font-size: 13px; line-height: 1.6; }
+  .verdict ul { margin-top: 8px; padding-left: 16px; font-size: 13px; line-height: 1.8; }
+
+  .pareto-note { font-size: 12px; color: #64748B; font-style: italic; margin-top: 10px; }
+
+  .override-banner { font-size: 12px; color: #D97706; font-weight: 700; margin-top: 8px; padding: 8px 12px; background: #FFFBEB; border-radius: 4px; border: 1px solid #FDE68A; }
+
+  .patterns { background: white; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .patterns-title { font-size: 11px; font-weight: 800; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .pattern-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pattern-card { background: #F8FAFC; border-radius: 6px; padding: 9px 11px; }
+  .pattern-label { font-size: 11px; font-weight: 700; color: #1D4ED8; margin-bottom: 4px; }
+  .pattern-text { font-size: 12px; line-height: 1.5; color: #334155; }
+
+  .sources { font-size: 11px; color: #94A3B8; line-height: 1.8; padding: 0 4px; margin-bottom: 16px; }
+
+  .reset-btn { width: 100%; padding: 11px; background: #334155; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 700; margin-top: 4px; }
+  .reset-btn:hover { background: #1E293B; }
+
+  @media (max-width: 500px) {
+    .pattern-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Is This Testimony Done?</h1>
+    <p>A personal algorithm for Jason Kashdan — built from your revision patterns, the Pareto 80/20 rule, and the principle that a submitted imperfect testimony beats a perfect unsent one every time.</p>
+  </div>
+
+  <div class="how">
+    <strong>How to use:</strong> Work through each section top to bottom, checking items as you go. All boxes in Content + Voice + Structure checked → submit. Two or more Perfectionism Traps triggered → also submit, even if other boxes are unchecked.
+  </div>
+
+  <!-- CONTENT GATE -->
+  <div class="section" id="sec-content" style="border: 1.5px solid #B91C1C;">
+    <div class="section-title" id="title-content" style="color: #B91C1C;">Content Gate — <span id="count-content">0</span>/5 checked</div>
+    <div class="section-sub">Non-negotiables. A testimony missing any of these needs more work — full stop.</div>
+
+    <div class="check-item" data-section="content" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">My position (support/oppose) is stated in the first paragraph.</div>
+      <div class="check-note">If a legislator reads only sentence one, do they know where you stand?</div></div>
+    </div>
+    <div class="check-item" data-section="content" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">My credentials appear in the opening and are relevant to this bill.</div>
+      <div class="check-note">Behavior change + structural health for housing/speed/nutrition bills.</div></div>
+    </div>
+    <div class="check-item" data-section="content" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">There is at least one piece of verified data or a source I personally trust.</div>
+      <div class="check-note">Don't rely on my draft's citations — confirm at least one yourself before sending.</div></div>
+    </div>
+    <div class="check-item" data-section="content" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">I name a specific alternative or actionable recommendation.</div>
+      <div class="check-note">"RI should invest in universal school meals" beats "RI should do more."</div></div>
+    </div>
+    <div class="check-item" data-section="content" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">There is at least one direct question or pointed assertion aimed at the sponsors.</div>
+      <div class="check-note">"Do the sponsors have data showing..." — your S2113 move. Use it every time.</div></div>
+    </div>
+
+    <div id="msg-content" class="status-msg status-err">↑ Address these before assessing voice or structure.</div>
+  </div>
+
+  <!-- VOICE GATE -->
+  <div class="section" id="sec-voice" style="border: 1.5px solid #D97706;">
+    <div class="section-title" id="title-voice" style="color: #D97706;">Voice Gate — <span id="count-voice">0</span>/3 checked</div>
+    <div class="section-sub">A 10–15 minute pass. Your voice is already strong — this catches drift toward academic hedging.</div>
+
+    <div class="check-item" data-section="voice" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">I've removed hedge words: "might," "perhaps," "could potentially," "it seems."</div>
+      <div class="check-note">You write declaratively. Trust it. Hedges are my habit, not yours.</div></div>
+    </div>
+    <div class="check-item" data-section="voice" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">I could read this aloud at a hearing without cringing.</div>
+      <div class="check-note">If a sentence sounds like a journal abstract, cut it or rewrite it in plain English.</div></div>
+    </div>
+    <div class="check-item" data-section="voice" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">If relevant, I've cited my own prior work to build the record.</div>
+      <div class="check-note">S0430 testimony, school meals white paper, Alimente policy work. 2 minutes, always worth it.</div></div>
+    </div>
+
+    <div id="msg-voice" class="status-msg status-warn">↑ Quick pass — remove hedges, confirm your voice is in every paragraph.</div>
+  </div>
+
+  <!-- STRUCTURE GATE -->
+  <div class="section" id="sec-struct" style="border: 1.5px solid #D97706;">
+    <div class="section-title" id="title-struct" style="color: #D97706;">Structure Gate — <span id="count-struct">0</span>/2 checked</div>
+    <div class="section-sub">Formatting only — 5 minutes max.</div>
+
+    <div class="check-item" data-section="struct" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">It fits on one page (online submission) or reads in under 3 minutes (spoken).</div>
+      <div class="check-note">Non-negotiable. Legislators won't read past page one.</div></div>
+    </div>
+    <div class="check-item" data-section="struct" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">The closing restates my position and ends with a clear, direct ask.</div>
+      <div class="check-note">"I urge a favorable report." "I encourage its passage." Simple. Done.</div></div>
+    </div>
+
+    <div id="msg-struct" class="status-msg status-warn">↑ Check length and close — 5 min fix.</div>
+  </div>
+
+  <!-- PERFECTIONISM TRAP -->
+  <div class="section" id="sec-trap" style="border: 1.5px solid #64748B;">
+    <div class="section-title" id="title-trap" style="color: #64748B;">Perfectionism Trap Detector — <span id="count-trap">0</span>/3 triggered</div>
+    <div class="section-sub">Check any that apply. If 2 or more are true, the algorithm overrides and says: submit anyway.</div>
+
+    <div class="check-item" data-section="trap" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">I've already revised this draft more than twice.</div>
+      <div class="check-note">Pareto principle: the last 20% of polish consumes 80% of your time. You're there.</div></div>
+    </div>
+    <div class="check-item" data-section="trap" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">My remaining concerns are cosmetic — word choice, rhythm, sentence flow.</div>
+      <div class="check-note">Cosmetic changes don't change legislative outcomes. Stop.</div></div>
+    </div>
+    <div class="check-item" data-section="trap" onclick="toggle(this)">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div><div class="check-text">Submitting this testimony is better than submitting nothing.</div>
+      <div class="check-note">It almost always is. Your voice in the record is better than silence.</div></div>
+    </div>
+
+    <div id="msg-trap" style="display:none;" class="override-banner">⚠️ Perfectionism override triggered. You're in diminishing returns territory. Submit the testimony.</div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict not-ready" id="verdict">
+    <h2 id="verdict-title">🔧 Keep going — here's what's left.</h2>
+    <div id="verdict-body">
+      <ul id="verdict-list">
+        <li>Content: 5 items need attention before anything else.</li>
+      </ul>
+      <p class="pareto-note">Reminder: the Pareto principle says the last 20% of polish takes 80% of your effort. Once content, voice, and structure are clear — the next revision is almost never worth the time cost.</p>
+    </div>
+  </div>
+
+  <!-- PATTERNS PANEL -->
+  <div class="patterns">
+    <div class="patterns-title">What your own revision history says</div>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-label">S2942 pattern</div>
+        <div class="pattern-text">You compressed long paragraphs into one dense block. If a paragraph in my draft runs more than 6 lines, that's where your instinct will — and should — kick in.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-label">S2113 pattern</div>
+        <div class="pattern-text">You replaced my framing with your own sourced data. If a citation in my draft is one you haven't verified yourself, the testimony isn't ready yet.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-label">Voice drift signal</div>
+        <div class="pattern-text">When I write "evidence-based alternative" — you write "the right tool." If you find yourself softening my phrasing, that's the one revision worth making.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-label">The self-cite move</div>
+        <div class="pattern-text">You linked S2113 back to S0430 and your school meals white paper. Takes 2 minutes. Builds a professional record across hearings. Always worth it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sources">
+    <strong style="color:#64748B;">Frameworks drawn on:</strong> Pareto 80/20 principle (Voltaire / engineering management) · <a href="https://www.nealreyes.com/blog/measure-excellence-4-level-performance-framework" style="color:#94A3B8;">Neal Reyes 4-Level Performance Framework</a> (Good Enough → Excellence → Perfection paralysis) · <a href="https://www.lisapoisso.com/2018/04/11/editing-and-revision-process/" style="color:#94A3B8;">Lisa Poisso's revision flowchart for self-publishers</a> · <a href="https://storyhospital.wordpress.com/2017/07/18/52-whats-a-finished-draft/" style="color:#94A3B8;">Story Hospital, "What's a Finished Draft?"</a> · Your S2942 and S2113 revision patterns, March 31, 2026.
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">Reset — start over with a new testimony</button>
+
+</div>
+
+<script>
+const counts = { content: 0, voice: 0, struct: 0, trap: 0 };
+const totals = { content: 5, voice: 3, struct: 2, trap: 3 };
+
+function toggle(el) {
+  const section = el.dataset.section;
+  const wasChecked = el.classList.contains("checked");
+  el.classList.toggle("checked");
+  counts[section] += wasChecked ? -1 : 1;
+  update();
+}
+
+function update() {
+  // Update counts
+  for (const s of ["content", "voice", "struct", "trap"]) {
+    document.getElementById("count-" + s).textContent = counts[s];
+  }
+
+  const cDone = counts.content === totals.content;
+  const vDone = counts.voice === totals.voice;
+  const sDone = counts.struct === totals.struct;
+  const coreDone = cDone && vDone && sDone;
+  const trapOverride = counts.trap >= 2;
+  const ready = coreDone || trapOverride;
+
+  // Section borders + messages
+  const secContent = document.getElementById("sec-content");
+  const titleContent = document.getElementById("title-content");
+  const msgContent = document.getElementById("msg-content");
+  secContent.style.border = `1.5px solid ${cDone ? "#2D6A4F" : "#B91C1C"}`;
+  titleContent.style.color = cDone ? "#2D6A4F" : "#B91C1C";
+  if (cDone) { msgContent.className = "status-msg status-ok"; msgContent.textContent = "✓ Content is solid. Move to Voice."; }
+  else { msgContent.className = "status-msg status-err"; msgContent.textContent = `↑ ${totals.content - counts.content} item(s) need attention before assessing voice or structure.`; }
+
+  const secVoice = document.getElementById("sec-voice");
+  const titleVoice = document.getElementById("title-voice");
+  const msgVoice = document.getElementById("msg-voice");
+  secVoice.style.border = `1.5px solid ${vDone ? "#2D6A4F" : "#D97706"}`;
+  titleVoice.style.color = vDone ? "#2D6A4F" : "#D97706";
+  if (vDone) { msgVoice.className = "status-msg status-ok"; msgVoice.textContent = "✓ Voice is yours. Move to Structure."; }
+  else { msgVoice.className = "status-msg status-warn"; msgVoice.textContent = "↑ Quick pass — remove hedges, confirm your voice is in every paragraph."; }
+
+  const secStruct = document.getElementById("sec-struct");
+  const titleStruct = document.getElementById("title-struct");
+  const msgStruct = document.getElementById("msg-struct");
+  secStruct.style.border = `1.5px solid ${sDone ? "#2D6A4F" : "#D97706"}`;
+  titleStruct.style.color = sDone ? "#2D6A4F" : "#D97706";
+  if (sDone) { msgStruct.className = "status-msg status-ok"; msgStruct.textContent = "✓ Structure is clean."; }
+  else { msgStruct.className = "status-msg status-warn"; msgStruct.textContent = "↑ Check length and close — 5 min fix."; }
+
+  // Trap
+  const trapBanner = document.getElementById("msg-trap");
+  const titleTrap = document.getElementById("title-trap");
+  const secTrap = document.getElementById("sec-trap");
+  if (trapOverride) {
+    trapBanner.style.display = "block";
+    secTrap.style.border = "1.5px solid #D97706";
+    titleTrap.style.color = "#D97706";
+  } else {
+    trapBanner.style.display = "none";
+    secTrap.style.border = "1.5px solid #64748B";
+    titleTrap.style.color = "#64748B";
+  }
+
+  // Verdict
+  const verdict = document.getElementById("verdict");
+  const title = document.getElementById("verdict-title");
+  const body = document.getElementById("verdict-body");
+
+  if (ready) {
+    verdict.className = "verdict ready";
+    title.textContent = "✅ Submit this testimony.";
+    let msg = "";
+    if (trapOverride && !coreDone) {
+      msg = `<p>The perfectionism override fired before all content gates cleared. Note the remaining gaps for next time — but the revision cost now exceeds the marginal benefit. Send it.</p>`;
+    } else {
+      msg = `<p>All gates cleared. This testimony meets the bar. Submitting now is better than revising it again.</p>`;
+    }
+    msg += `<p class="pareto-note">The Pareto principle: the last 20% of polish takes 80% of your effort. You're past that threshold.</p>`;
+    body.innerHTML = msg;
+  } else {
+    verdict.className = "verdict not-ready";
+    title.textContent = "🔧 Keep going — here's what's left.";
+    let items = [];
+    if (!cDone) items.push(`<li><strong>Content:</strong> ${totals.content - counts.content} item(s) unresolved — address these first.</li>`);
+    if (cDone && !vDone) items.push(`<li><strong>Voice:</strong> 10-min pass. Remove hedges, add your pointed question if missing.</li>`);
+    if (cDone && vDone && !sDone) items.push(`<li><strong>Structure:</strong> 5 min — confirm length and closing sentence.</li>`);
+    body.innerHTML = `<ul>${items.join("")}</ul><p class="pareto-note">Reminder: the Pareto principle says the last 20% of polish takes 80% of your effort. Once content, voice, and structure clear — stop revising.</p>`;
+  }
+}
+
+function resetAll() {
+  document.querySelectorAll(".check-item").forEach(el => el.classList.remove("checked"));
+  counts.content = counts.voice = counts.struct = counts.trap = 0;
+  update();
+}
+
+update();
+</script>
+</body>
+</html>
