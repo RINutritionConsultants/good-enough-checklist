@@ -68,8 +68,8 @@
 <div class="wrap">
 
   <div class="header">
-    <h1>Is This Testimony Done?</h1>
-    <p>A personal algorithm for Jason Kashdan — built from your revision patterns, the Pareto 80/20 rule, and the principle that a submitted imperfect testimony beats a perfect unsent one every time.</p>
+    <h1>Is This Writeup Done?</h1>
+    <p>A personal algorithm for Jason Kashdan — built from your revision patterns, the Pareto 80/20 rule, and the principle that a submitted imperfect writeup beats a perfect unsent one every time.</p>
   </div>
 
   <div class="how">
@@ -79,7 +79,7 @@
   <!-- CONTENT GATE -->
   <div class="section" id="sec-content" style="border: 1.5px solid #B91C1C;">
     <div class="section-title" id="title-content" style="color: #B91C1C;">Content Gate — <span id="count-content">0</span>/5 checked</div>
-    <div class="section-sub">Non-negotiables. A testimony missing any of these needs more work — full stop.</div>
+    <div class="section-sub">Non-negotiables. A writeup missing any of these needs more work — full stop.</div>
 
     <div class="check-item" data-section="content" onclick="toggle(this)">
       <div class="check-box"><span class="check-mark">✓</span></div>
@@ -170,11 +170,11 @@
     </div>
     <div class="check-item" data-section="trap" onclick="toggle(this)">
       <div class="check-box"><span class="check-mark">✓</span></div>
-      <div><div class="check-text">Submitting this testimony is better than submitting nothing.</div>
+      <div><div class="check-text">Submitting this writeup is better than submitting nothing.</div>
       <div class="check-note">It almost always is. Your voice in the record is better than silence.</div></div>
     </div>
 
-    <div id="msg-trap" style="display:none;" class="override-banner">⚠️ Perfectionism override triggered. You're in diminishing returns territory. Submit the testimony.</div>
+    <div id="msg-trap" style="display:none;" class="override-banner">⚠️ Perfectionism override triggered. You're in diminishing returns territory. Submit the writeup.</div>
   </div>
 
   <!-- VERDICT -->
@@ -198,7 +198,7 @@
       </div>
       <div class="pattern-card">
         <div class="pattern-label">S2113 pattern</div>
-        <div class="pattern-text">You replaced my framing with your own sourced data. If a citation in my draft is one you haven't verified yourself, the testimony isn't ready yet.</div>
+        <div class="pattern-text">You replaced my framing with your own sourced data. If a citation in my draft is one you haven't verified yourself, the writeup isn't ready yet.</div>
       </div>
       <div class="pattern-card">
         <div class="pattern-label">Voice drift signal</div>
@@ -215,7 +215,7 @@
     <strong style="color:#64748B;">Frameworks drawn on:</strong> Pareto 80/20 principle (Voltaire / engineering management) · <a href="https://www.nealreyes.com/blog/measure-excellence-4-level-performance-framework" style="color:#94A3B8;">Neal Reyes 4-Level Performance Framework</a> (Good Enough → Excellence → Perfection paralysis) · <a href="https://www.lisapoisso.com/2018/04/11/editing-and-revision-process/" style="color:#94A3B8;">Lisa Poisso's revision flowchart for self-publishers</a> · <a href="https://storyhospital.wordpress.com/2017/07/18/52-whats-a-finished-draft/" style="color:#94A3B8;">Story Hospital, "What's a Finished Draft?"</a> · Your S2942 and S2113 revision patterns, March 31, 2026.
   </div>
 
-  <button class="reset-btn" onclick="resetAll()">Reset — start over with a new testimony</button>
+  <button class="reset-btn" onclick="resetAll()">Reset — start over with a new writeup</button>
 
 </div>
 
@@ -290,12 +290,12 @@ function update() {
 
   if (ready) {
     verdict.className = "verdict ready";
-    title.textContent = "✅ Submit this testimony.";
+    title.textContent = "✅ Submit this writeup.";
     let msg = "";
     if (trapOverride && !coreDone) {
       msg = `<p>The perfectionism override fired before all content gates cleared. Note the remaining gaps for next time — but the revision cost now exceeds the marginal benefit. Send it.</p>`;
     } else {
-      msg = `<p>All gates cleared. This testimony meets the bar. Submitting now is better than revising it again.</p>`;
+      msg = `<p>All gates cleared. This writeup meets the bar. Submitting now is better than revising it again.</p>`;
     }
     msg += `<p class="pareto-note">The Pareto principle: the last 20% of polish takes 80% of your effort. You're past that threshold.</p>`;
     body.innerHTML = msg;
